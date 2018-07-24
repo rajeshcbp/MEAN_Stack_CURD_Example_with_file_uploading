@@ -40,7 +40,6 @@ var Product = require('./routs/product/createNewProduct');
 
 //=====================================================API'S===============================================================================
 
-//MULTER for file uploading
 storage = multer.diskStorage({
     destination: 'public/images/productImages',
     filename: function (req, file, cb) {
@@ -49,16 +48,21 @@ storage = multer.diskStorage({
                 return cb(err);
             }
             var today2 = new Date().getTime();
-          
-            return cb(null, today2 + "-" + file.originalname);
+          console.log("Am in file upload multer storage function", req.params.productName)
+          var fileKeey2 = req.params.productName.replace(/ /g, '-').replace(/_/g, '-');
+          console.log("product name after replace==================", fileKeey2);
+            return cb(null,  fileKeey2 + "-" + today2+ "-" + file.originalname);
         });
     }
 });
 
-app.post("/AddProduct/:productName/:quantity/:productPrice/:totalPrice", multer({ storage : storage}).single('images'), Product.createProduct);
+
+
+app.post("/AddProduct/:productName/:quantity/:productPrice/:totalPrice/:description/:remarks", multer({ storage : storage}).single('images'), Product.createProduct);
 app.get("/GetAllProductDetails", Product.getAllProductDetails);
 app.get("/GetProductDetails/:Id", Product.getProductDetails);
-
+app.post("/UpdateProductDetails/:productName/:quantity/:productPrice/:totalPrice/:description/:remarks/:Id" , multer({ storage : storage}).single('images'), Product.updateProduct);
+app.delete("/DeleteProductDetails/:Id", Product.delete);
 
 
 //=========================================================================================================================================

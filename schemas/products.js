@@ -21,6 +21,14 @@ var productSchema = mongoose.Schema({
 	image: { //body
 		type: String,
 		default: ""
+	},
+	description: { //body
+		type: String,
+		default: ""
+	},
+	remarks: { //body
+		type: String,
+		default: ""
 	}
 });
 
